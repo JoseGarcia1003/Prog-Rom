@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorpresa 💖</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #ffe6f0, #fff5e6);
+        text-align: center;
+        color: #333;
+    }
+
+    .container {
+        padding: 40px 20px;
+    }
+
+    h1 {
+        font-size: 2.2em;
+    }
+
+    button {
+        padding: 12px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #ff6b9c;
+        color: white;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #ff3f7f;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 80px);
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 2px solid #ccc;
+    }
+
+    .selected {
+        border: 2px solid #ff3f7f;
+        background: #ffe6f0;
+    }
+
+    .reward {
+        font-size: 1.3em;
+        margin-top: 20px;
+    }
+
+    .food {
+        font-size: 50px;
+        margin: 10px;
+    }
+
+    .angry {
+        font-size: 60px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="screen1">
+    <h1>💖 Bienvenida Romina Eliza🛏️ 💖</h1>
+    <p>Hoy tienes una misión especial 👀</p>
+    <button onclick="nextScreen(2)">Empezar</button>
+</div>
+
+<div class="container hidden" id="screen2">
+    <h1>🎲 Paso 1</h1>
+    <p>Elige un número del 1 al 30</p>
+    <input type="number" id="number" min="1" max="30">
+    <br><br>
+    <button onclick="step1()">Confirmar</button>
+</div>
+
+<div class="container hidden" id="screen3">
+    <h1>🎉 ¡Felicidades!</h1>
+    <p>Acabas de acertar el primer paso para obtener tu recompensa 😏</p>
+    <button onclick="nextScreen(4)">Siguiente</button>
+</div>
+
+<div class="container hidden" id="screen4">
+    <h1>💊 Paso 2</h1>
+    <p>¿Te has tomado los medicamentos?</p>
+    <button onclick="meds(true)">SI</button>
+    <button onclick="meds(false)">NO</button>
+</div>
+
+<div class="container hidden" id="screen5">
+    <h1>🃏 Paso 3</h1>
+    <p>Selecciona las 2 cartas favoritas de José (solo picas)</p>
+
+    <div class="cards" id="cards"></div>
+
+    <button onclick="checkCards()">Confirmar</button>
+</div>
+
+<div class="container hidden" id="screen6">
+    <h1>🎁 RECOMPENSA DESBLOQUEADA 🎁</h1>
+    <p class="reward">Te ganaste esto por portarte bien 😌</p>
+
+    <div class="food">🍰 ☕</div>
+    <p>Torta mojada con té</p>
+
+    <div class="food">🍥 ☕</div>
+    <p>Rollo de canela con té</p>
+
+    <h2>💖 Te lo prometí… y cumplí 💖</h2>
+</div>
+
+<div class="container hidden" id="screenError">
+    <div class="angry">😡</div>
+    <h2>Primero ve a tomar tus remedios</h2>
+    <p>y vuelve 😤</p>
+</div>
+
+<script>
+function nextScreen(n) {
+    document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+    document.getElementById('screen' + n).classList.remove('hidden');
+}
+
+function step1() {
+    nextScreen(3);
+}
+
+function meds(answer) {
+    if (answer) {
+        nextScreen(5);
+    } else {
+        document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+        document.getElementById('screenError').classList.remove('hidden');
+
+        setTimeout(() => {
+            location.reload();
+        }, 3000);
+    }
+}
+
+const cardValues = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+let selected = [];
+
+const cardsContainer = document.getElementById("cards");
+
+cardValues.forEach(val => {
+    let card = document.createElement("div");
+    card.classList.add("card");
+    card.innerText = val + " ♠";
+
+    card.onclick = () => {
+        if (selected.includes(val)) {
+            selected = selected.filter(c => c !== val);
+            card.classList.remove("selected");
+        } else {
+            if (selected.length < 2) {
+                selected.push(val);
+                card.classList.add("selected");
+            }
+        }
+    };
+
+    cardsContainer.appendChild(card);
+});
+
+function checkCards() {
+    if (selected.includes("10") && selected.includes("J")) {
+        nextScreen(6);
+    } else {
+        alert("Ups... intenta otra combinación 😏");
+    }
+}
+</script>
+
+</body>
+</html>
