@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sorpresa para Romina</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ctext y=%2250%22 font-size=%2250%22%3E%F0%9F%8E%81%3C/text%3E%3C/svg%3E">
   <meta name="theme-color" content="#ff7aa8" />
   <style>
     :root{
@@ -310,6 +311,12 @@
       transform:translateY(0);
     }
 
+    button:disabled{
+      opacity:.72;
+      cursor:not-allowed;
+      transform:none !important;
+    }
+
     .btn-primary{
       background:linear-gradient(135deg, var(--primary), #ff9f72);
       color:white;
@@ -605,6 +612,263 @@
       z-index:5;
     }
 
+
+    .loading-screen{
+      position:fixed;
+      inset:0;
+      z-index:30;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 18%),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,.45), transparent 20%),
+        linear-gradient(135deg, #fff0f6, #fff7e8);
+      transition:opacity .55s ease, visibility .55s ease;
+    }
+
+    .loading-screen.hidden{
+      opacity:0;
+      visibility:hidden;
+    }
+
+    .loading-card{
+      width:min(460px, 100%);
+      background:rgba(255,255,255,.82);
+      backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:var(--shadow);
+      border-radius:28px;
+      padding:28px 24px;
+      text-align:center;
+    }
+
+    .loading-title{
+      font-size:1.65rem;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .loading-text{
+      color:var(--muted);
+      line-height:1.65;
+      margin-bottom:18px;
+    }
+
+    .loading-bar{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.9);
+      overflow:hidden;
+      box-shadow:inset 0 2px 6px rgba(0,0,0,.05);
+    }
+
+    .loading-fill{
+      height:100%;
+      width:0;
+      border-radius:999px;
+      background:linear-gradient(90deg, #ff6fa2, #ffb15c);
+      animation:loadingFill 1.6s ease forwards;
+    }
+
+    @keyframes loadingFill{
+      from{width:0}
+      to{width:100%}
+    }
+
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      z-index:25;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(44, 27, 39, .32);
+      backdrop-filter:blur(8px);
+      opacity:0;
+      visibility:hidden;
+      transition:opacity .28s ease, visibility .28s ease;
+    }
+
+    .modal-overlay.show{
+      opacity:1;
+      visibility:visible;
+    }
+
+    .modal-card{
+      width:min(440px, 100%);
+      background:rgba(255,255,255,.95);
+      border-radius:24px;
+      box-shadow:0 24px 50px rgba(0,0,0,.16);
+      padding:24px 22px;
+      text-align:center;
+      border:1px solid rgba(0,0,0,.05);
+      transform:translateY(14px) scale(.97);
+      transition:transform .28s ease;
+    }
+
+    .modal-overlay.show .modal-card{
+      transform:translateY(0) scale(1);
+    }
+
+    .modal-icon{
+      font-size:48px;
+      margin-bottom:8px;
+    }
+
+    .modal-title{
+      font-size:1.55rem;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .modal-message{
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:18px;
+    }
+
+    .card{
+      transform-style:preserve-3d;
+      will-change:transform;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(130deg, rgba(255,255,255,.7), transparent 38%);
+      opacity:0;
+      transition:opacity .2s ease;
+      pointer-events:none;
+    }
+
+    .card:hover::before{
+      opacity:1;
+    }
+
+    .reveal-stage{
+      width:min(760px,100%);
+      margin:0 auto;
+    }
+
+    .envelope-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:340px;
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,247,251,.95));
+      border:1px solid rgba(0,0,0,.05);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:26px;
+    }
+
+    .envelope-box{
+      width:190px;
+      height:132px;
+      position:relative;
+      margin-bottom:20px;
+      filter:drop-shadow(0 14px 22px rgba(255,111,162,.18));
+      animation:envelopeFloat 2.6s ease-in-out infinite;
+    }
+
+    @keyframes envelopeFloat{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+    }
+
+    .envelope-base{
+      position:absolute;
+      inset:auto 0 0 0;
+      height:108px;
+      background:linear-gradient(180deg, #fff0f6, #ffdfe9);
+      border-radius:0 0 22px 22px;
+      border:2px solid rgba(255,111,162,.18);
+      overflow:hidden;
+    }
+
+    .envelope-base::before,
+    .envelope-base::after{
+      content:"";
+      position:absolute;
+      width:140px;
+      height:140px;
+      background:linear-gradient(180deg, #ffe7ef, #ffd7e5);
+      top:18px;
+      border:2px solid rgba(255,111,162,.12);
+    }
+
+    .envelope-base::before{
+      left:-72px;
+      transform:rotate(45deg);
+    }
+
+    .envelope-base::after{
+      right:-72px;
+      transform:rotate(45deg);
+    }
+
+    .envelope-flap{
+      position:absolute;
+      left:0; right:0; top:8px;
+      margin:auto;
+      width:0;
+      height:0;
+      border-left:95px solid transparent;
+      border-right:95px solid transparent;
+      border-top:76px solid #ffc7d8;
+      transform-origin:top center;
+      transition:transform .7s ease;
+      filter:drop-shadow(0 6px 10px rgba(0,0,0,.05));
+      z-index:2;
+    }
+
+    .envelope-letter{
+      position:absolute;
+      left:20px;
+      right:20px;
+      top:42px;
+      height:78px;
+      background:white;
+      border-radius:14px;
+      box-shadow:0 10px 22px rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:var(--primary-dark);
+      transition:transform .7s ease, opacity .7s ease;
+      z-index:1;
+    }
+
+    .envelope-box.open .envelope-flap{
+      transform:rotateX(180deg);
+    }
+
+    .envelope-box.open .envelope-letter{
+      transform:translateY(-34px);
+    }
+
+    .reward-content{
+      opacity:0;
+      max-height:0;
+      overflow:hidden;
+      transform:translateY(16px);
+      transition:opacity .55s ease, transform .55s ease, max-height .75s ease;
+    }
+
+    .reward-content.show{
+      opacity:1;
+      max-height:1400px;
+      overflow:visible;
+      transform:translateY(0);
+    }
+
+
     @media (max-width: 640px){
       .panel{min-height:680px}
       .view{padding:28px 18px 30px}
@@ -624,6 +888,24 @@
 
   <div class="hearts" id="hearts"></div>
   <canvas id="confetti"></canvas>
+
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-card">
+      <div class="hero-icon" style="font-size:58px; margin-bottom:6px;">🎁</div>
+      <div class="loading-title">Preparando sorpresa…</div>
+      <div class="loading-text">Dale un segundo al sistema. Está dejando todo bonito para Romina Eliza🛏️.</div>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <div class="modal-icon" id="modalIcon">✨</div>
+      <div class="modal-title" id="modalTitle">Aviso</div>
+      <div class="modal-message" id="modalMessage">Mensaje</div>
+      <button class="btn-primary" id="modalButton" onclick="closeModal()">Entendido</button>
+    </div>
+  </div>
 
   <div class="app">
     <div class="shell">
@@ -744,40 +1026,59 @@
         <section class="view" id="view6">
           <div class="reward-wrap">
             <div class="badge">🎊 Recompensa desbloqueada</div>
-            <h1 class="reward-title">Bum… te ganaste tu detalle</h1>
-            <p class="reward-subtitle">
-              Como te portaste bien y superaste las pruebas oficiales del sistema, aquí está tu recompensa hipotéticamente real, digitalmente deliciosa y emocionalmente válida.
-            </p>
-
-            <div class="gift-grid">
-              <div class="gift-card">
-                <div class="gift-emoji">🍰☕</div>
-                <h3>Torta mojada con té</h3>
-                <p>
-                  Suavecita, antojable y con vibes de apapacho premium. Aprobada para mejorar el ánimo, el día y probablemente hasta el oído.
+            <div class="reveal-stage">
+              <div class="envelope-wrap">
+                <div class="envelope-box" id="envelopeBox">
+                  <div class="envelope-flap"></div>
+                  <div class="envelope-letter">PREMIO</div>
+                  <div class="envelope-base"></div>
+                </div>
+                <h1 class="reward-title" style="margin-bottom:10px;">Hay una recompensa para ti</h1>
+                <p class="reward-subtitle" style="margin-bottom:18px;">
+                  Ya superaste todo. Solo falta abrir tu premio oficial para ver qué te ganaste.
                 </p>
-              </div>
-
-              <div class="gift-card">
-                <div class="gift-emoji">🥐☕</div>
-                <h3>Rollo de canela con té</h3>
-                <p>
-                  Porque claramente un solo antojo era muy poco. Así que este también venía incluido en la recompensa.
-                </p>
+                <div class="btn-row">
+                  <button class="btn-primary" id="openRewardBtn" onclick="revealReward()">Abrir recompensa</button>
+                </div>
               </div>
             </div>
 
-            <div class="final-note">
-              Te dije que si te tomabas todos los medicamentos y te portabas bien, más tarde te complacía… y técnicamente
-              <strong>no mentí</strong>. Solo que te cumplí de una forma más creativa y con estilo JAJA.<br>
-              <span class="signature">Con cariño y molestadera certificada, José ✨</span>
-            </div>
+            <div class="reward-content" id="rewardContent">
+              <h1 class="reward-title" style="margin-top:26px;">Bum… te ganaste tu detalle</h1>
+              <p class="reward-subtitle">
+                Como te portaste bien y superaste las pruebas oficiales del sistema, aquí está tu recompensa hipotéticamente real, digitalmente deliciosa y emocionalmente válida.
+              </p>
 
-            <div class="btn-row" style="margin-top:22px;">
-              <button class="btn-primary" onclick="launchFinale()">Celebrar otra vez</button>
-              <button class="btn-secondary" onclick="restartExperience()">Repetir sorpresa</button>
+              <div class="gift-grid">
+                <div class="gift-card">
+                  <div class="gift-emoji">🍰☕</div>
+                  <h3>Torta mojada con té</h3>
+                  <p>
+                    Suavecita, antojable y con vibes de apapacho premium. Aprobada para mejorar el ánimo, el día y probablemente hasta el oído.
+                  </p>
+                </div>
+
+                <div class="gift-card">
+                  <div class="gift-emoji">🥐☕</div>
+                  <h3>Rollo de canela con té</h3>
+                  <p>
+                    Porque claramente un solo antojo era muy poco. Así que este también venía incluido en la recompensa.
+                  </p>
+                </div>
+              </div>
+
+              <div class="final-note">
+                Te dije que si te tomabas todos los medicamentos y te portabas bien, más tarde te complacía… y técnicamente
+                <strong>no mentí</strong>. Solo que te cumplí de una forma más creativa y con estilo JAJA.<br>
+                <span class="signature">Con cariño y molestadera certificada, José ✨</span>
+              </div>
+
+              <div class="btn-row" style="margin-top:22px;">
+                <button class="btn-primary" onclick="launchFinale()">Celebrar otra vez</button>
+                <button class="btn-secondary" onclick="restartExperience()">Repetir sorpresa</button>
+              </div>
+              <p class="footer-mini sparkles">✦ ✦ ✦ misión cumplida ✦ ✦ ✦</p>
             </div>
-            <p class="footer-mini sparkles">✦ ✦ ✦ misión cumplida ✦ ✦ ✦</p>
           </div>
         </section>
       </div>
@@ -792,6 +1093,14 @@
     const numberInput = document.getElementById('numberInput');
     const hearts = document.getElementById('hearts');
     const cardsGrid = document.getElementById('cardsGrid');
+    const loadingScreen = document.getElementById('loadingScreen');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalButton = document.getElementById('modalButton');
+    const envelopeBox = document.getElementById('envelopeBox');
+    const rewardContent = document.getElementById('rewardContent');
 
     let selectedCards = [];
 
@@ -823,14 +1132,43 @@
       }
     }
 
+    function showModal({icon = '✨', title = 'Aviso', message = '', buttonText = 'Entendido', onClose = null} = {}){
+      modalIcon.textContent = icon;
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
+      modalButton.textContent = buttonText;
+      modalButton.dataset.onClose = onClose ? 'yes' : '';
+      modalOverlay._onClose = onClose;
+      modalOverlay.classList.add('show');
+    }
+
+    function closeModal(){
+      modalOverlay.classList.remove('show');
+      if(typeof modalOverlay._onClose === 'function'){
+        const fn = modalOverlay._onClose;
+        modalOverlay._onClose = null;
+        fn();
+      }
+    }
+
     function tinyHint(){
-      alert('Consejo del sistema: portarse bien hoy tiene beneficios muy interesantes 😌');
+      showModal({
+        icon: '😌',
+        title: 'Consejo del sistema',
+        message: 'Portarse bien hoy trae beneficios bastante interesantes.',
+        buttonText: 'Anotado'
+      });
     }
 
     function handleNumber(){
       const val = parseInt(numberInput.value, 10);
       if(!val || val < 1 || val > 30){
-        alert('Elige un número válido del 1 al 30 😌');
+        showModal({
+          icon: '🔢',
+          title: 'Número inválido',
+          message: 'Elige un número válido del 1 al 30 para seguir avanzando.',
+          buttonText: 'Voy de nuevo'
+        });
         return;
       }
       goToView(2);
@@ -844,9 +1182,17 @@
       }
     }
 
+    function resetRewardState(){
+      envelopeBox.classList.remove('open');
+      rewardContent.classList.remove('show');
+      const openRewardBtn = document.getElementById('openRewardBtn');
+      if(openRewardBtn) openRewardBtn.disabled = false;
+    }
+
     function restartExperience(){
       selectedCards = [];
       clearSelection();
+      resetRewardState();
       numberInput.value = '';
       goToView(0);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -905,12 +1251,31 @@
                  selectedCards.includes('J');
 
       if(ok){
+        resetRewardState();
         goToView(6);
         launchFinale();
       }else{
         playSoftTone(160, 0.12, 'sawtooth');
-        alert('Uy no… esa combinación no era. Intenta con las 2 cartas favoritas de José 😏');
+        showModal({
+          icon: '🃏',
+          title: 'Esa no era',
+          message: 'Intenta otra combinación. Las dos cartas correctas siguen esperando.',
+          buttonText: 'Intentar otra vez'
+        });
       }
+    }
+
+
+    function revealReward(){
+      const openRewardBtn = document.getElementById('openRewardBtn');
+      if(openRewardBtn) openRewardBtn.disabled = true;
+      envelopeBox.classList.add('open');
+      playSuccessTone();
+      setTimeout(() => {
+        rewardContent.classList.add('show');
+        burstConfetti();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 520);
     }
 
     function makeHearts(){
@@ -1030,9 +1395,40 @@
       setTimeout(burstConfetti, 300);
     }
 
+    numberInput.addEventListener('keydown', (event) => {
+      if(event.key === 'Enter') handleNumber();
+    });
+
+    modalOverlay.addEventListener('click', (event) => {
+      if(event.target === modalOverlay) closeModal();
+    });
+
+    function attachCardTilt(){
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          const rx = ((y / rect.height) - 0.5) * -10;
+          const ry = ((x / rect.width) - 0.5) * 10;
+          card.style.transform = `translateY(-4px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
+
     createCards();
+    attachCardTilt();
     makeHearts();
     updateProgress(0);
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+      }, 1550);
+    });
   </script>
 </body>
 </html>
